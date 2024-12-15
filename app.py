@@ -38,39 +38,51 @@ def predict_image(img_path):
     # Return the prediction and the prediction probability
     return prediction
 
-# Custom CSS for Streamlit UI
+# Add Tailwind CSS via CDN
 st.markdown("""
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f5f5f5;
+            background-color: #f0f9ff !important;  /* Light blue background with !important */
             color: #333;
         }
         .title {
             font-size: 2rem;
             font-weight: 700;
-            color: #4CAF50;
+            color: #1E40AF;  /* Blue text color */
         }
         .sidebar {
-            background-color: #f8f9fa;
+            background-color: #3b82f6 !important;  /* Tailwind blue background for sidebar */
         }
         .sidebar .sidebar-content {
-            color: #000;
+            color: white;  /* White content in the sidebar */
         }
         .stButton>button {
-            background-color: #4CAF50;
+            background-color: #3b82f6 !important;  /* Tailwind blue button */
             color: white;
             font-weight: bold;
         }
         .stFileUploader>label {
-            background-color: #4CAF50;
+            background-color: #3b82f6 !important;  /* Tailwind blue file uploader button */
             color: white;
             border-radius: 8px;
+        }
+        .sidebar img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        img {
+            width: 100px;
+            height: 100px;
         }
     </style>
 """, unsafe_allow_html=True)
 
 # Streamlit sidebar
 with st.sidebar:
+    st.image("./Asset/logo.png")
+    st.title("Your Health, Our Priority: Detect Pneumonia in Seconds.")
     st.header("About this App")
     st.write("""
         This is a Pneumonia Detection app. Upload a chest X-ray image, and the model will predict whether the image shows signs of pneumonia or is normal. 
@@ -107,11 +119,11 @@ if uploaded_file is not None:
         if probability > 0.5:
             st.write("### Prediction: Pneumonia")
             st.write(f"**Confidence**: {probability * 100:.2f}%")
-            st.markdown('<p style="color: red;">This may indicate a case of pneumonia, please consult a doctor for further tests.</p>', unsafe_allow_html=True)
+            st.markdown('<p class="text-red-500 font-semibold">This may indicate a case of pneumonia, please consult a doctor for further tests.</p>', unsafe_allow_html=True)
         else:
             st.write("### Prediction: Normal")
             st.write(f"**Confidence**: {(1 - probability) * 100:.2f}%")
-            st.markdown('<p style="color: green;">The X-ray appears to be normal. No signs of pneumonia detected.</p>', unsafe_allow_html=True)
+            st.markdown('<p class="text-green-500 font-semibold">The X-ray appears to be normal. No signs of pneumonia detected.</p>', unsafe_allow_html=True)
         
         # Display raw prediction (for debugging or deeper analysis)
         st.write(f"**Raw Prediction Value**: {probability}")
