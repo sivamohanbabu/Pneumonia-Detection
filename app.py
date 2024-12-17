@@ -4,8 +4,28 @@ from PIL import Image
 from tensorflow.keras.models import load_model
 from difflib import get_close_matches
 
-# Load your pre-trained model (ensure the correct file path)
-model = load_model('models/pneumonia_model.keras')  # Replace with your model's actual path
+# Streamlit sidebar with navigation options
+with st.sidebar:
+    st.image("./Asset/logo.png")
+    st.title("Your Health, Our Priority")
+    st.write("""This app predicts pneumonia based on X-ray images and answers questions about pneumonia.""")
+    
+    # Sidebar navigation options
+    option = st.radio("Choose a feature:", ("Pneumonia Detection", "Pneumonia FAQ Chatbot"))
+    
+    # Choose which model to load
+    model_option = st.radio("Choose Model", ("best_pneumonia_model.keras", "pneumonia_final_model.keras"))
+
+    st.write("### Instructions:")
+    st.write("1. Upload an X-ray image.")
+    st.write("2. Get a prediction with a confidence percentage.")
+    st.write("3. Ask any questions about pneumonia.")
+
+# Load the selected model
+if model_option == "best_pneumonia_model.keras":
+    model = load_model('models/best_pneumonia_model.keras')
+elif model_option == "pneumonia_final_model.keras":
+    model = load_model('models/pneumonia_final_model.keras')
 
 # Recompile the model (important if it wasn't compiled when saved)
 model.compile(optimizer='adam', 
@@ -92,20 +112,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
-# Streamlit sidebar with navigation options
-with st.sidebar:
-    st.image("./Asset/logo.png")
-    st.title("Your Health, Our Priority")
-    st.write("""This app predicts pneumonia based on X-ray images and answers questions about pneumonia.""")
-        # Sidebar navigation options
-    option = st.radio("Choose a feature:", ("Pneumonia Detection", "Pneumonia FAQ Chatbot"))
-
-    st.write("### Instructions:")
-    st.write("1. Upload an X-ray image.")
-    st.write("2. Get a prediction with a confidence percentage.")
-    st.write("3. Ask any questions about pneumonia.")
-
 
 # Conditional display based on the sidebar selection
 if option == "Pneumonia Detection":

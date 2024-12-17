@@ -61,18 +61,21 @@ model = Sequential([
     Dense(1, activation='sigmoid')
 ])
 
-# Compile the model
-model.compile(optimizer=Adam(learning_rate=0.001), loss='binary_crossentropy', metrics=['accuracy'])
+# Compile the model with Recall added to the metrics
+model.compile(
+    optimizer=Adam(learning_rate=0.001), 
+    loss='binary_crossentropy', 
+    metrics=['accuracy', tf.keras.metrics.Recall()]
+)
 
 # Train the model
 history = model.fit(
     train_generator,
     steps_per_epoch=100,
-    epochs=10,
+    epochs=20,
     validation_data=val_generator,
     validation_steps=50
 )
 
 # Save the trained model
 model.save('models/pneumonia_model.keras')  # Save model in Keras format
-
